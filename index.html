@@ -276,5 +276,192 @@ document.addEventListener('touchstart', unlockAudio, { once: true });
 // ... rest of your original script (particles, weather toggle, mute logic, etc.) ...
 // Keep everything below exactly as you had it
 </script>
+  <script>
+  // Resume audio context + unlock on first gesture
+  let audioUnlocked = false;
+
+  const unlockAudio = () => {
+    if (audioUnlocked) return;
+    audioUnlocked = true;
+
+    const overlay = document.getElementById('audio-unlock-overlay');
+    if (overlay) overlay.classList.add('hidden');
+
+    // Resume audio context if suspended (Safari/iOS needs this)
+    if (typeof AudioContext !== 'undefined') {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      if (ctx.state === 'suspended') ctx.resume();
+    }
+
+    // Unmute + set volumes
+    document.querySelectorAll('audio').forEach(audio => {
+      audio.muted = false;
+      audio.volume = audio.id === 'rain-ambient' ? 0.75 : 1.0;
+    });
+
+    // Play rain if in rain mode
+    if (modes[currentModeIndex] === 'rain') {
+      rainSound.play().then(() => console.log("Rain started OK")).catch(e => console.error("Rain failed:", e.message));
+    }
+
+    // YouTube unmute + play
+    ytPlayer.contentWindow.postMessage('{"event":"command","func":"unMute","args":[]}', '*');
+    ytPlayer.contentWindow.postMessage('{"event":"command","func":"playVideo","args":[]}', '*');
+
+    document.removeEventListener('click', unlockAudio);
+    document.removeEventListener('touchstart', unlockAudio);
+  };
+
+  document.addEventListener('click', unlockAudio, { once: true });
+  document.addEventListener('touchstart', unlockAudio, { once: true });
+
+  const particles = document.getElementById('particles');
+  const weatherBtn = document.getElementById('weather-toggle');
+  const musicIndicator = document.getElementById('music-indicator');
+  const musicIcon = document.getElementById('music-icon');
+  const ytPlayer = document.getElementById('ytplayer');
+
+  const clickSound = document.getElementById('btn-click');
+  const sparkleSound = document.getElementById('sparkle-whoosh');
+  const rainSound = document.getElementById('rain-ambient');
+
+  const modes = ['rain', 'snow', 'sparks', 'petals', 'motes'];
+  let currentModeIndex = 0;
+  let spawnInterval;
+
+  function createDrop() {
+    const drop = document.createElement('div');
+    drop.className = 'drop';
+    drop.style.left = Math.random() * 100 + 'vw';
+    drop.style.animationDelay = (Math.random() * 4 + 0.3) + 's';
+    drop.style.animationDuration = (0.65 + Math.random() * 1.0) + 's';
+    if (Math.random() > 0.55) drop.classList.add('fast');
+    particles.appendChild(drop);
+    setTimeout(() => drop.remove(), 10000);
+  }
+
+  function createSnowflake() {
+    const flake = document.createElement('div');
+    flake.className = 'snowflake';
+    const size = 5 + Math.random() * 10;
+    flake.style.width = flake.style.height = size + 'px';
+    flake.style.left = Math.random() * 100 + 'vw';
+    const dur = 8 + Math.random() * 16;
+    flake.style.animationDuration = dur + 's';
+    flake.style.animationDelay = Math.random() * 5 + 's';
+    flake.style.setProperty('--drift', (Math.random() - 0.5) * 140 + 'vw');
+    particles.appendChild(flake);
+    setTimeout(() => flake.remove(), dur * 1000 + 2000);
+  }
+
+  function createSpark() {
+    const spark = document.createElement('div');
+    spark.className = 'spark';
+    spark.style.left = Math.random() * 100 + 'vw';
+    const dur = 4 + Math.random() * 6;
+    spark.style.animationDelay = (Math.random() * 3 + 0.5) + 's';
+    spark.style.animationDuration = dur + 's';
+    spark.style.setProperty('--drift', (Math.random() - 0.5) * 180 + 'vw');
+    particles.appendChild(spark);
+    setTimeout(() => spark.remove(), dur * 1000 + 1500);
+  }
+
+  function createPetal() {
+    const petal = document.createElement('div');
+    petal.className = 'petal';
+    petal.style.left = Math.random() * 100 + 'vw';
+    const dur = 10 + Math.random() * 12;
+    petal.style.animationDelay = (Math.random() * 5 + 1) + 's';
+    petal.style.animationDuration = dur + 's';
+    petal.style.setProperty('--drift', (Math.random() - 0.5) * 200 + 'vw');
+    particles.appendChild(petal);
+    setTimeout(() => petal.remove(), dur * 1000 + 2500);
+  }
+
+  function createMote() {
+    const mote = document.createElement('div');
+    mote.className = 'mote';
+    mote.style.left = Math.random() * 100 + 'vw';
+    const dur = 18 + Math.random() * 24;
+    mote.style.animationDuration = dur + 's';
+    mote.style.animationDelay = Math.random() * 8 + 's';
+    mote.style.setProperty('--drift', (Math.random() - 0.5) * 180 + 'vw');
+    particles.appendChild(mote);
+    setTimeout(() => mote.remove(), dur * 1000 + 4000);
+  }
+
+  function startCurrentMode() {
+    if (spawnInterval) clearInterval(spawnInterval);
+    particles.innerHTML = '';
+
+    const mode = modes[currentModeIndex];
+
+    if (mode === 'rain') {
+      rainSound.volume = 0.75;
+      rainSound.play().catch(e => console.log("Rain play attempt:", e.message));
+    } else {
+      rainSound.pause();
+      rainSound.currentTime = 0;
+    }
+
+    let intervalMs;
+    if (mode === 'rain') {
+      intervalMs = 55;
+      weatherBtn.innerHTML = '<i class="fas fa-cloud-rain"></i>';
+      spawnInterval = setInterval(createDrop, intervalMs);
+    } else if (mode === 'snow') {
+      intervalMs = 90;
+      weatherBtn.innerHTML = '<i class="fas fa-snowflake"></i>';
+      spawnInterval = setInterval(createSnowflake, intervalMs);
+    } else if (mode === 'sparks') {
+      intervalMs = 120;
+      weatherBtn.innerHTML = '<i class="fas fa-fire"></i>';
+      spawnInterval = setInterval(createSpark, intervalMs);
+    } else if (mode === 'petals') {
+      intervalMs = 150;
+      weatherBtn.innerHTML = '<i class="fas fa-leaf"></i>';
+      spawnInterval = setInterval(createPetal, intervalMs);
+    } else if (mode === 'motes') {
+      intervalMs = 280;
+      weatherBtn.innerHTML = '<i class="fas fa-star"></i>';
+      spawnInterval = setInterval(createMote, intervalMs);
+    }
+  }
+
+  weatherBtn.addEventListener('click', () => {
+    clickSound.currentTime = 0;
+    clickSound.play().catch(() => {});
+    currentModeIndex = (currentModeIndex + 1) % modes.length;
+    startCurrentMode();
+  });
+
+  startCurrentMode();
+
+  let isMuted = false;
+
+  musicIndicator.addEventListener('click', () => {
+    isMuted = !isMuted;
+
+    const ytVol = isMuted ? 0 : 50;
+    ytPlayer.contentWindow.postMessage(`{"event":"command","func":"setVolume","args":[${ytVol}]}`, '*');
+
+    document.querySelectorAll('audio').forEach(audio => {
+      audio.volume = isMuted ? 0 : (audio.id === 'rain-ambient' ? 0.75 : 1.0);
+    });
+
+    musicIcon.className = isMuted ? 'fas fa-volume-mute' : 'fas fa-music';
+
+    if (!isMuted) {
+      sparkleSound.currentTime = 0;
+      sparkleSound.play().catch(() => {});
+    }
+  });
+
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      ytPlayer.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[50]}', '*');
+    }, 1800);
+  });
+</script>
 </body>
 </html>
