@@ -10,6 +10,7 @@
     /* YOUR ORIGINAL FULL CSS – UNCHANGED */
     /* ────────────────────────────────────────────── */
     * { margin:0; padding:0; box-sizing:border-box; }
+
     body {
       min-height: 100vh;
       background: #0a001f url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4" viewBox="0 0 4 4"><rect width="4" height="4" fill="%23000"/><rect x="0" y="0" width="2" height="2" fill="%23001122"/><rect x="2" y="2" width="2" height="2" fill="%23001122"/></svg>') repeat;
@@ -202,6 +203,44 @@
   </audio>
 
  <script>
+
+// Animated tab title – typewriter + delete effect
+const baseTitle = "Mystical Helper";
+let currentText = "";
+let index = 0;
+let direction = 1; // 1 = typing, -1 = deleting
+let speed = 120;   // ms per character
+
+function animateTabTitle() {
+  if (direction === 1) {
+    // Typing forward
+    if (index <= baseTitle.length) {
+      currentText = baseTitle.slice(0, index);
+      index++;
+    } else {
+      // Finished typing → start deleting after short pause
+      direction = -1;
+      setTimeout(animateTabTitle, 1200); // pause at full text
+      return;
+    }
+  } else {
+    // Deleting backward
+    if (index > 0) {
+      currentText = baseTitle.slice(0, index);
+      index--;
+    } else {
+      // Finished deleting → start typing again
+      direction = 1;
+      setTimeout(animateTabTitle, 600); // short pause before re-type
+      return;
+    }
+  }
+
+  document.title = currentText || "Mystical Helper"; // fallback when empty
+}
+
+// Start animation
+setInterval(animateTabTitle, speed);
   // Resume audio context + unlock on first gesture
   let audioUnlocked = false;
 
