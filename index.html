@@ -1,19 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mystical Helper Realm • VR | Discord | Neon Chaos</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
-    /* Your existing full CSS – unchanged */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    /* ────────────────────────────────────────────── */
+    /* YOUR ORIGINAL FULL CSS – UNCHANGED */
+    /* ────────────────────────────────────────────── */
+    * { margin:0; padding:0; box-sizing:border-box; }
     body {
       min-height: 100vh;
       background: #0a001f url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4" viewBox="0 0 4 4"><rect width="4" height="4" fill="%23000"/><rect x="0" y="0" width="2" height="2" fill="%23001122"/><rect x="2" y="2" width="2" height="2" fill="%23001122"/></svg>') repeat;
@@ -23,27 +19,16 @@
       position: relative;
       cursor: pointer;
     }
-
     body::before {
       content: "";
       position: fixed;
       inset: 0;
-      background: repeating-linear-gradient(transparent 0px, transparent 2px, rgba(0, 0, 0, 0.28) 2px, rgba(0, 0, 0, 0.28) 4px);
+      background: repeating-linear-gradient(transparent 0px, transparent 2px, rgba(0,0,0,0.28) 2px, rgba(0,0,0,0.28) 4px);
       pointer-events: none;
       z-index: 4;
       animation: scan 10s linear infinite;
     }
-
-    @keyframes scan {
-      0% {
-        transform: translateY(-100%);
-      }
-
-      100% {
-        transform: translateY(100%);
-      }
-    }
-
+    @keyframes scan { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
     .particles {
       position: fixed;
       inset: 0;
@@ -51,552 +36,119 @@
       z-index: 2;
       overflow: hidden;
     }
-
-    .drop {
-      position: absolute;
-      width: 2px;
-      height: 100px;
-      background: linear-gradient(transparent, #a0f0ff);
-      opacity: 0;
-      animation: fall linear forwards;
-      top: -220px;
-    }
-
-    .drop.fast {
-      height: 160px;
-      animation-duration: 0.55s;
-    }
-
-    @keyframes fall {
-      0% {
-        transform: translateY(0);
-        opacity: 0.6
-      }
-
-      8% {
-        opacity: 1
-      }
-
-      92% {
-        opacity: 1
-      }
-
-      100% {
-        transform: translateY(140vh);
-        opacity: 0
-      }
-    }
-
-    .snowflake {
-      position: absolute;
-      width: 9px;
-      height: 9px;
-      background: #e0f8ff;
-      border-radius: 50%;
-      box-shadow: 0 0 14px #a0e0ff, 0 0 28px #88d0ff;
-      opacity: 0;
-      animation: snowfall linear forwards;
-      top: -80px;
-    }
-
-    @keyframes snowfall {
-      0% {
-        transform: translateY(0) translateX(0);
-        opacity: 0.8
-      }
-
-      12% {
-        opacity: 1
-      }
-
-      100% {
-        transform: translateY(135vh) translateX(var(--drift));
-        opacity: 0
-      }
-    }
-
-    .spark {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      background: #ffdd99;
-      border-radius: 50%;
-      box-shadow: 0 0 18px #ffbb66, 0 0 36px #ff8800;
-      opacity: 0;
-      animation: sparkFall linear forwards;
-      top: -60px;
-    }
-
-    @keyframes sparkFall {
-      0% {
-        transform: translateY(0) translateX(0) rotate(0deg);
-        opacity: 0.95
-      }
-
-      40% {
-        opacity: 1
-      }
-
-      100% {
-        transform: translateY(125vh) translateX(var(--drift)) rotate(900deg);
-        opacity: 0
-      }
-    }
-
-    .petal {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: radial-gradient(circle at 30% 30%, #ff88ff, #bb55ff 70%, transparent);
-      clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
-      opacity: 0;
-      animation: petalFall linear forwards;
-      top: -90px;
-    }
-
-    @keyframes petalFall {
-      0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 0.75
-      }
-
-      100% {
-        transform: translateY(145vh) translateX(var(--drift)) rotate(1440deg);
-        opacity: 0
-      }
-    }
-
-    .mote {
-      position: absolute;
-      width: 3.5px;
-      height: 3.5px;
-      background: #e0ffff;
-      border-radius: 50%;
-      box-shadow: 0 0 10px #c0ffff, 0 0 18px #a0e0ff;
-      opacity: 0;
-      animation: moteDrift linear forwards;
-      top: -60px;
-    }
-
-    @keyframes moteDrift {
-      0% {
-        transform: translateY(0) translateX(0);
-        opacity: 0.35
-      }
-
-      100% {
-        transform: translateY(110vh) translateX(var(--drift));
-        opacity: 0
-      }
-    }
-
-    .lightning {
-      position: fixed;
-      inset: 0;
-      background: #fff;
-      opacity: 0;
-      pointer-events: none;
-      z-index: 3;
-      mix-blend-mode: screen;
-      animation: flash 5s infinite;
-    }
-
-    .lightning.extra {
-      animation-duration: 7s;
-      animation-delay: 1.5s;
-    }
-
-    @keyframes flash {
-
-      0%,
-      5%,
-      15%,
-      22%,
-      30%,
-      100% {
-        opacity: 0
-      }
-
-      6%,
-      23% {
-        opacity: 0.25
-      }
-
-      7%,
-      24% {
-        opacity: 0.09
-      }
-    }
-
-    .controls {
-      position: fixed;
-      top: 25px;
-      right: 25px;
-      z-index: 70;
-    }
-
+    .drop { position:absolute; width:2px; height:100px; background:linear-gradient(transparent,#a0f0ff); opacity:0; animation:fall linear forwards; top:-220px; }
+    .drop.fast { height:160px; animation-duration:0.55s; }
+    @keyframes fall { 0%{transform:translateY(0);opacity:0.6} 8%{opacity:1} 92%{opacity:1} 100%{transform:translateY(140vh);opacity:0} }
+    .snowflake { position:absolute; width:9px; height:9px; background:#e0f8ff; border-radius:50%; box-shadow:0 0 14px #a0e0ff,0 0 28px #88d0ff; opacity:0; animation:snowfall linear forwards; top:-80px; }
+    @keyframes snowfall { 0%{transform:translateY(0) translateX(0);opacity:0.8} 12%{opacity:1} 100%{transform:translateY(135vh) translateX(var(--drift));opacity:0} }
+    .spark { position:absolute; width:6px; height:6px; background:#ffdd99; border-radius:50%; box-shadow:0 0 18px #ffbb66,0 0 36px #ff8800; opacity:0; animation:sparkFall linear forwards; top:-60px; }
+    @keyframes sparkFall { 0%{transform:translateY(0) translateX(0) rotate(0deg);opacity:0.95} 40%{opacity:1} 100%{transform:translateY(125vh) translateX(var(--drift)) rotate(900deg);opacity:0} }
+    .petal { position:absolute; width:20px; height:20px; background:radial-gradient(circle at 30% 30%,#ff88ff,#bb55ff 70%,transparent); clip-path:polygon(50% 0%,100% 38%,82% 100%,18% 100%,0% 38%); opacity:0; animation:petalFall linear forwards; top:-90px; }
+    @keyframes petalFall { 0%{transform:translateY(0) rotate(0deg);opacity:0.75} 100%{transform:translateY(145vh) translateX(var(--drift)) rotate(1440deg);opacity:0} }
+    .mote { position:absolute; width:3.5px; height:3.5px; background:#e0ffff; border-radius:50%; box-shadow:0 0 10px #c0ffff,0 0 18px #a0e0ff; opacity:0; animation:moteDrift linear forwards; top:-60px; }
+    @keyframes moteDrift { 0%{transform:translateY(0) translateX(0);opacity:0.35} 100%{transform:translateY(110vh) translateX(var(--drift));opacity:0} }
+    .lightning { position:fixed; inset:0; background:#fff; opacity:0; pointer-events:none; z-index:3; mix-blend-mode:screen; animation:flash 5s infinite; }
+    .lightning.extra { animation-duration:7s; animation-delay:1.5s; }
+    @keyframes flash { 0%,5%,15%,22%,30%,100% {opacity:0} 6%,23%{opacity:0.25} 7%,24%{opacity:0.09} }
+    .controls { position: fixed; top: 25px; right: 25px; z-index: 70; }
     .ctrl-btn {
-      width: 80px;
-      height: 80px;
-      background: rgba(5, 10, 40, 0.92);
+      width: 80px; height: 80px;
+      background: rgba(5,10,40,0.92);
       border: 4px solid #00ffea;
       color: #00ffea;
       font-size: 2.4rem;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; position: relative; overflow: hidden;
       transition: all 0.4s;
       box-shadow: 0 0 50px #00ffea80, inset 0 0 25px #00ffea40;
       animation: glitchPulse 3s infinite;
     }
-
-    @keyframes glitchPulse {
-
-      0%,
-      100% {
-        box-shadow: 0 0 50px #00ffea80;
-      }
-
-      50% {
-        box-shadow: 0 0 90px #ff00ff90;
-      }
-    }
-
-    .ctrl-btn:hover {
-      transform: scale(1.35) rotate(15deg);
-      box-shadow: 0 0 120px #ff00ff, inset 0 0 50px #ff00ff60;
-      border-color: #ff00ff;
-    }
-
-    .ctrl-btn:active {
-      transform: scale(0.85);
-      box-shadow: inset 0 0 60px #ff00ff90;
-    }
-
+    @keyframes glitchPulse { 0%,100% { box-shadow: 0 0 50px #00ffea80; } 50% { box-shadow: 0 0 90px #ff00ff90; } }
+    .ctrl-btn:hover { transform: scale(1.35) rotate(15deg); box-shadow: 0 0 120px #ff00ff, inset 0 0 50px #ff00ff60; border-color: #ff00ff; }
+    .ctrl-btn:active { transform: scale(0.85); box-shadow: inset 0 0 60px #ff00ff90; }
     #music-indicator {
-      position: fixed;
-      top: 50%;
-      right: 20px;
-      transform: translateY(-50%);
-      background: rgba(5, 10, 40, 0.94);
-      padding: 24px 18px;
-      border-radius: 40px 0 0 40px;
-      font-size: 1.2rem;
-      color: #ff00ff;
-      z-index: 70;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 14px;
-      box-shadow: -10px 0 50px #ff00ff60;
-      cursor: pointer;
-      transition: all 0.4s;
+      position: fixed; top: 50%; right: 20px; transform: translateY(-50%);
+      background: rgba(5,10,40,0.94); padding: 24px 18px;
+      border-radius: 40px 0 0 40px; font-size: 1.2rem; color: #ff00ff;
+      z-index: 70; display: flex; flex-direction: column; align-items: center; gap: 14px;
+      box-shadow: -10px 0 50px #ff00ff60; cursor: pointer; transition: all 0.4s;
       border: 3px solid #00ffea;
     }
-
-    #music-indicator:hover {
-      right: 0;
-      box-shadow: -20px 0 90px #ff00ff;
-      border-color: #ff00ff;
-    }
-
-    #music-indicator i {
-      font-size: 2.4rem;
-    }
-
-    .title-section {
-      text-align: center;
-      margin: 140px 0 100px;
-      position: relative;
-      z-index: 10;
-    }
-
+    #music-indicator:hover { right: 0; box-shadow: -20px 0 90px #ff00ff; border-color: #ff00ff; }
+    #music-indicator i { font-size: 2.4rem; }
+    .title-section { text-align:center; margin:140px 0 100px; position:relative; z-index:10; }
     .main-title {
-      font-size: 10rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 20px;
-      color: #00ffea;
-      text-shadow: 0 0 100px #00ffea, 0 0 200px #ff00ff;
+      font-size: 10rem; font-weight: 900; text-transform: uppercase; letter-spacing: 20px;
+      color: #00ffea; text-shadow: 0 0 100px #00ffea, 0 0 200px #ff00ff;
       animation: glitchCyber 2s infinite;
     }
-
     @keyframes glitchCyber {
-
-      0%,
-      100% {
-        transform: skew(0deg);
-        text-shadow: 0.08em 0 0 #ff00ff, -0.05em -0.05em 0 #00ffea;
-      }
-
-      2% {
-        transform: skew(3deg);
-      }
-
-      4% {
-        transform: skew(-3deg);
-      }
+      0%,100% { transform: skew(0deg); text-shadow: 0.08em 0 0 #ff00ff, -0.05em -0.05em 0 #00ffea; }
+      2% { transform: skew(3deg); }
+      4% { transform: skew(-3deg); }
     }
-
-    .content {
-      position: relative;
-      z-index: 10;
-      text-align: center;
-      padding: 0 40px 260px;
-      max-width: 1500px;
-      margin: 0 auto;
-    }
-
-    .subtitle {
-      font-size: 3.4rem;
-      margin: 2.5rem 0 10rem;
-      opacity: 0.88;
-      letter-spacing: 6px;
-      color: #ff00ff;
-      text-shadow: 0 0 40px #ff00ff;
-    }
-
-    .cards {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8rem;
-      justify-content: center;
-      margin: 0 auto;
-      padding: 0 40px 120px;
-    }
-
-    .card {
-      width: 420px;
-      height: 420px;
-      border-radius: 40px;
-      overflow: hidden;
-      position: relative;
-      cursor: pointer;
-      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.7);
-    }
-
-    .card-inner {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 50px 40px;
-      text-align: center;
-      transition: all 0.5s ease;
-      overflow: hidden;
-    }
-
-    .card .icon {
-      font-size: 10rem;
-      margin-bottom: 20px;
-      line-height: 0.9;
-      transition: all 0.6s;
-      text-shadow: 0 0 60px currentColor;
-    }
-
-    .card h2 {
-      font-size: 3.2rem;
-      font-weight: 900;
-      margin: 10px 0 12px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      line-height: 1.15;
-      transition: all 0.4s;
-    }
-
-    .card .underline {
-      width: 70%;
-      height: 4px;
-      margin: 0 auto 8px;
-      transition: all 0.5s;
-    }
-
-    .card .underline2 {
-      width: 50%;
-      height: 3px;
-      margin: 0 auto 15px;
-      transition: all 0.5s;
-    }
-
-    .card .main-desc {
-      font-size: 1.35rem;
-      font-weight: bold;
-      margin-bottom: 6px;
-      line-height: 1.45;
-      word-break: break-word;
-      overflow-wrap: break-word;
-      max-width: 100%;
-      transition: all 0.5s;
-    }
-
-    .card .sub-desc {
-      font-size: 1.25rem;
-      line-height: 1.45;
-      word-break: break-word;
-      overflow-wrap: break-word;
-      max-width: 100%;
-      opacity: 0.92;
-      transition: all 0.6s;
-    }
-
-    .youtube-card {
-      background: #0d0d0d;
-      border: 6px solid #00bfff;
-      box-shadow: 0 0 50px #00bfff60;
-    }
-
-    .youtube-card .icon {
-      color: #ff4444;
-      text-shadow: 0 0 70px #ff4444;
-    }
-
-    .youtube-card h2 {
-      color: #ff4444;
-      text-shadow: 0 0 40px #ff4444;
-    }
-
-    .youtube-card .underline {
-      background: #0000ff;
-      box-shadow: 0 0 25px #0000ff;
-    }
-
-    .youtube-card .underline2 {
-      background: #00bfff;
-      box-shadow: 0 0 20px #00bfff;
-    }
-
-    .youtube-card .main-desc {
-      color: #ff4444;
-      text-shadow: 0 0 25px #ff4444;
-    }
-
-    .youtube-card .sub-desc {
-      color: #00bfff;
-      text-shadow: 0 0 20px #00bfff;
-    }
-
-    .youtube-card:hover {
-      transform: scale(1.1) translateY(-20px);
-      box-shadow: 0 0 140px #ff4444, 0 0 200px #00bfff;
-      border-color: #ff4444;
-    }
-
-    .discord-card {
-      background: #1a1433;
-      border: 6px solid #00bfff;
-      box-shadow: 0 0 50px #00bfff60;
-    }
-
-    .discord-card .icon {
-      color: #7289da;
-      text-shadow: 0 0 70px #7289da;
-    }
-
-    .discord-card h2 {
-      color: #7289da;
-      text-shadow: 0 0 40px #7289da;
-    }
-
-    .discord-card .underline {
-      background: #00bfff;
-      box-shadow: 0 0 25px #00bfff;
-    }
-
-    .discord-card .main-desc {
-      color: #ba55d3;
-      text-shadow: 0 0 25px #ba55d3;
-    }
-
-    .discord-card .sub-desc {
-      color: #00bfff;
-      text-shadow: 0 0 20px #00bfff;
-    }
-
-    .discord-card:hover {
-      transform: scale(1.1) translateY(-20px);
-      box-shadow: 0 0 140px #ba55d3, 0 0 200px #00bfff;
-      border-color: #ba55d3;
-    }
-
+    .content { position:relative; z-index:10; text-align:center; padding:0 40px 260px; max-width:1500px; margin:0 auto; }
+    .subtitle { font-size:3.4rem; margin:2.5rem 0 10rem; opacity:0.88; letter-spacing:6px; color:#ff00ff; text-shadow:0 0 40px #ff00ff; }
+    .cards { display:flex; flex-wrap:wrap; gap:8rem; justify-content:center; margin:0 auto; padding:0 40px 120px; }
+    .card { width:420px; height:420px; border-radius:40px; overflow:hidden; position:relative; cursor:pointer; transition:all 0.5s cubic-bezier(0.23,1,0.32,1); box-shadow:0 15px 50px rgba(0,0,0,0.7); }
+    .card-inner { width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:50px 40px; text-align:center; transition:all 0.5s ease; overflow:hidden; }
+    .card .icon { font-size:10rem; margin-bottom:20px; line-height:0.9; transition:all 0.6s; text-shadow:0 0 60px currentColor; }
+    .card h2 { font-size:3.2rem; font-weight:900; margin:10px 0 12px; text-transform:uppercase; letter-spacing:2px; line-height:1.15; transition:all 0.4s; }
+    .card .underline { width:70%; height:4px; margin:0 auto 8px; transition:all 0.5s; }
+    .card .underline2 { width:50%; height:3px; margin:0 auto 15px; transition:all 0.5s; }
+    .card .main-desc { font-size:1.35rem; font-weight:bold; margin-bottom:6px; line-height:1.45; word-break:break-word; overflow-wrap:break-word; max-width:100%; transition:all 0.5s; }
+    .card .sub-desc { font-size:1.25rem; line-height:1.45; word-break:break-word; overflow-wrap:break-word; max-width:100%; opacity:0.92; transition:all 0.6s; }
+    .youtube-card { background:#0d0d0d; border:6px solid #00bfff; box-shadow:0 0 50px #00bfff60; }
+    .youtube-card .icon { color:#ff4444; text-shadow:0 0 70px #ff4444; }
+    .youtube-card h2 { color:#ff4444; text-shadow:0 0 40px #ff4444; }
+    .youtube-card .underline { background:#0000ff; box-shadow:0 0 25px #0000ff; }
+    .youtube-card .underline2 { background:#00bfff; box-shadow:0 0 20px #00bfff; }
+    .youtube-card .main-desc { color:#ff4444; text-shadow:0 0 25px #ff4444; }
+    .youtube-card .sub-desc { color:#00bfff; text-shadow:0 0 20px #00bfff; }
+    .youtube-card:hover { transform:scale(1.1) translateY(-20px); box-shadow:0 0 140px #ff4444,0 0 200px #00bfff; border-color:#ff4444; }
+    .discord-card { background:#1a1433; border:6px solid #00bfff; box-shadow:0 0 50px #00bfff60; }
+    .discord-card .icon { color:#7289da; text-shadow:0 0 70px #7289da; }
+    .discord-card h2 { color:#7289da; text-shadow:0 0 40px #7289da; }
+    .discord-card .underline { background:#00bfff; box-shadow:0 0 25px #00bfff; }
+    .discord-card .main-desc { color:#ba55d3; text-shadow:0 0 25px #ba55d3; }
+    .discord-card .sub-desc { color:#00bfff; text-shadow:0 0 20px #00bfff; }
+    .discord-card:hover { transform:scale(1.1) translateY(-20px); box-shadow:0 0 140px #ba55d3,0 0 200px #00bfff; border-color:#ba55d3; }
     .card::after {
       content: "";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      background: radial-gradient(circle, rgba(0, 191, 255, 0.8), transparent 70%);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      opacity: 0;
-      pointer-events: none;
-      z-index: 1;
+      position: absolute; top: 50%; left: 50%;
+      width: 0; height: 0;
+      background: radial-gradient(circle, rgba(0,191,255,0.8), transparent 70%);
+      border-radius: 50%; transform: translate(-50%, -50%);
+      opacity: 0; pointer-events: none; z-index: 1;
     }
-
     .card:active::after {
-      width: 800px;
-      height: 800px;
-      opacity: 1;
+      width: 800px; height: 800px; opacity: 1;
       animation: ripple 1s ease-out forwards;
     }
-
     @keyframes ripple {
-      to {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(3.5);
-      }
+      to { opacity: 0; transform: translate(-50%, -50%) scale(3.5); }
     }
-
-    footer {
-      position: fixed;
-      bottom: 45px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 1.3rem;
-      opacity: 0.82;
-      z-index: 40;
-    }
-
+    footer { position:fixed; bottom:45px; left:50%; transform:translateX(-50%); font-size:1.3rem; opacity:0.82; z-index:40; }
     #audio-unlock-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.85);
-      color: #00ffea;
-      font-size: 2.8rem;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      z-index: 9999;
-      pointer-events: all;
-      opacity: 1;
-      transition: opacity 0.8s;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.85); color: #00ffea;
+      font-size: 2.8rem; font-weight: bold;
+      display: flex; align-items: center; justify-content: center; text-align: center;
+      z-index: 9999; pointer-events: all; opacity: 1; transition: opacity 0.8s;
     }
-
-    #audio-unlock-overlay.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
+    #audio-unlock-overlay.hidden { opacity: 0; pointer-events: none; }
   </style>
 </head>
-
 <body>
   <div id="audio-unlock-overlay">Click / Tap anywhere to unlock audio & enter the realm</div>
   <div class="particles" id="particles"></div>
   <div class="lightning"></div>
   <div class="lightning extra"></div>
 
-  <!-- Updated: MysticalStudio-b7s channel (latest known embeddable video/loop) -->
+  <!-- Music Player -->
   <iframe id="ytplayer" width="1" height="1"
-    src="https://www.youtube.com/embed/videoseries?list=PLyour_playlist_id_here&enablejsapi=1&autoplay=0&loop=1"
+    src="https://www.youtube.com/embed/rXYm8YLrZwU?enablejsapi=1&autoplay=0&loop=1&playlist=rXYm8YLrZwU"
     frameborder="0" allow="autoplay" style="display:none;"></iframe>
 
   <div class="controls">
@@ -640,9 +192,7 @@
   <footer>Powered by Mystical Helper • 2026</footer>
 
   <audio id="rain-ambient" loop preload="auto" muted playsinline>
-    <source
-      src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_3b7c4c1c8c.mp3?filename=gentle-rain-loop-109785.mp3"
-      type="audio/mpeg">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_3b7c4c1c8c.mp3?filename=gentle-rain-loop-109785.mp3" type="audio/mpeg">
   </audio>
   <audio id="btn-click" preload="auto" muted playsinline>
     <source src="https://assets.codepen.io/605876/click-soft.mp3" type="audio/mpeg">
@@ -652,22 +202,27 @@
   </audio>
 
   <script>
+    // Audio unlock – fixed to work reliably
     const unlockAudio = () => {
       const overlay = document.getElementById('audio-unlock-overlay');
       if (overlay) overlay.classList.add('hidden');
 
+      // Unmute all audio elements
       document.querySelectorAll('audio').forEach(audio => {
         audio.muted = false;
         audio.volume = audio.id === 'rain-ambient' ? 0.75 : 1.0;
       });
 
+      // Force play rain if in rain mode
       if (modes[currentModeIndex] === 'rain') {
-        rainSound.play().catch(e => console.log("Rain play failed:", e));
+        rainSound.play().catch(e => console.error("Rain play failed:", e));
       }
 
+      // YouTube: unmute + play
       ytPlayer.contentWindow.postMessage('{"event":"command","func":"unMute","args":[]}', '*');
       ytPlayer.contentWindow.postMessage('{"event":"command","func":"playVideo","args":[]}', '*');
 
+      // Clean up
       document.removeEventListener('click', unlockAudio);
       document.removeEventListener('touchstart', unlockAudio);
     };
@@ -752,14 +307,17 @@
     function startCurrentMode() {
       if (spawnInterval) clearInterval(spawnInterval);
       particles.innerHTML = '';
+
       const mode = modes[currentModeIndex];
+
       if (mode === 'rain') {
         rainSound.volume = 0.75;
-        if (!rainSound.muted && rainSound.paused) rainSound.play().catch(() => {});
+        rainSound.play().catch(e => console.log("Rain play error:", e));
       } else {
         rainSound.pause();
         rainSound.currentTime = 0;
       }
+
       let intervalMs;
       if (mode === 'rain') {
         intervalMs = 55;
@@ -793,20 +351,25 @@
 
     startCurrentMode();
 
+    // FIXED MUTE BUTTON
     let isMuted = false;
 
     musicIndicator.addEventListener('click', () => {
       isMuted = !isMuted;
 
+      // YouTube mute/unmute
       const ytVol = isMuted ? 0 : 50;
       ytPlayer.contentWindow.postMessage(`{"event":"command","func":"setVolume","args":[${ytVol}]}`, '*');
 
+      // Local audio mute/unmute
       document.querySelectorAll('audio').forEach(audio => {
         audio.volume = isMuted ? 0 : (audio.id === 'rain-ambient' ? 0.75 : 1.0);
       });
 
+      // Icon update
       musicIcon.className = isMuted ? 'fas fa-volume-mute' : 'fas fa-music';
 
+      // Optional unmuting feedback
       if (!isMuted) {
         sparkleSound.currentTime = 0;
         sparkleSound.play().catch(() => {});
@@ -820,5 +383,4 @@
     });
   </script>
 </body>
-
 </html>
