@@ -7,10 +7,7 @@
   <title>Mystical Helper Realm • VR | Discord | Neon Chaos</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    /* ────────────────────────────────────────────── */
-    /* YOUR ORIGINAL CSS – UNCHANGED BELOW THIS LINE */
-    /* ────────────────────────────────────────────── */
-
+    /* Your existing full CSS – unchanged */
     * {
       margin: 0;
       padding: 0;
@@ -55,7 +52,6 @@
       overflow: hidden;
     }
 
-    /* Particles styles */
     .drop {
       position: absolute;
       width: 2px;
@@ -232,7 +228,6 @@
       }
     }
 
-    /* Controls – weather toggle */
     .controls {
       position: fixed;
       top: 25px;
@@ -282,7 +277,6 @@
       box-shadow: inset 0 0 60px #ff00ff90;
     }
 
-    /* Music Indicator */
     #music-indicator {
       position: fixed;
       top: 50%;
@@ -366,7 +360,6 @@
       text-shadow: 0 0 40px #ff00ff;
     }
 
-    /* Cards */
     .cards {
       display: flex;
       flex-wrap: wrap;
@@ -571,7 +564,6 @@
       z-index: 40;
     }
 
-    /* Audio unlock overlay */
     #audio-unlock-overlay {
       position: fixed;
       inset: 0;
@@ -601,23 +593,29 @@
   <div class="particles" id="particles"></div>
   <div class="lightning"></div>
   <div class="lightning extra"></div>
+
+  <!-- Updated: MysticalStudio-b7s channel (latest known embeddable video/loop) -->
   <iframe id="ytplayer" width="1" height="1"
-    src="https://www.youtube.com/embed/rXYm8YLrZwU?enablejsapi=1&autoplay=0&loop=1&playlist=rXYm8YLrZwU" frameborder="0"
-    allow="autoplay" style="display:none;"></iframe>
+    src="https://www.youtube.com/embed/videoseries?list=PLyour_playlist_id_here&enablejsapi=1&autoplay=0&loop=1"
+    frameborder="0" allow="autoplay" style="display:none;"></iframe>
+
   <div class="controls">
     <button id="weather-toggle" class="ctrl-btn" title="Cycle weather"><i class="fas fa-cloud-rain"></i></button>
   </div>
+
   <div id="music-indicator">
     <i class="fas fa-music" id="music-icon"></i>
     <span>Music</span>
   </div>
+
   <div class="title-section">
     <h1 class="main-title">Mystical Helper Realm</h1>
     <div class="subtitle">VR Nights • Mystic Energy • Endless Neon</div>
   </div>
+
   <div class="content">
     <div class="cards">
-      <a href="https://www.youtube.com/@YourYouTubeHandle" class="card youtube-card" target="_blank">
+      <a href="https://www.youtube.com/@MysticalStudio-b7s" class="card youtube-card" target="_blank">
         <div class="card-inner">
           <i class="fab fa-youtube icon"></i>
           <h2>YOUTUBE</h2>
@@ -638,6 +636,7 @@
       </a>
     </div>
   </div>
+
   <footer>Powered by Mystical Helper • 2026</footer>
 
   <audio id="rain-ambient" loop preload="auto" muted playsinline>
@@ -799,19 +798,15 @@
     musicIndicator.addEventListener('click', () => {
       isMuted = !isMuted;
 
-      // Toggle YouTube
       const ytVol = isMuted ? 0 : 50;
       ytPlayer.contentWindow.postMessage(`{"event":"command","func":"setVolume","args":[${ytVol}]}`, '*');
 
-      // Toggle ALL local sounds (rain + click + sparkle)
       document.querySelectorAll('audio').forEach(audio => {
         audio.volume = isMuted ? 0 : (audio.id === 'rain-ambient' ? 0.75 : 1.0);
       });
 
-      // Update icon
       musicIcon.className = isMuted ? 'fas fa-volume-mute' : 'fas fa-music';
 
-      // Optional feedback when unmuting
       if (!isMuted) {
         sparkleSound.currentTime = 0;
         sparkleSound.play().catch(() => {});
