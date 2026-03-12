@@ -201,7 +201,79 @@
     <source src="https://assets.codepen.io/605876/sparkle-whoosh-short.mp3" type="audio/mpeg">
   </audio>
 
-  <script>
+    <script>
+// Typewriter + delete tab title animation (exactly like you wanted)
+const baseTitle = "Mystical Helper";
+let currentText = "";
+let index = 0;
+let direction = 1; // 1 = typing forward, -1 = deleting backward
+let speed = 100;   // ms per character (adjust for faster/slower)
+
+function animateTabTitle() {
+  if (direction === 1) {
+    // Typing forward
+    if (index <= baseTitle.length) {
+      currentText = baseTitle.slice(0, index);
+      index++;
+      document.title = currentText;
+    } else {
+      // Finished typing → hold for a moment, then start deleting
+      direction = -1;
+      setTimeout(animateTabTitle, 1500); // pause at full text (1.5s)
+      return;
+    }
+  } else {
+    // Deleting backward
+    if (index > 0) {
+      currentText = baseTitle.slice(0, index - 1);
+      index--;
+      document.title = currentText || " "; // show empty space when fully deleted
+    } else {
+      // Finished deleting → hold empty for a bit, then start typing again
+      direction = 1;
+      setTimeout(animateTabTitle, 800); // short pause when blank
+      return;
+    }
+  }
+}
+
+// Start the animation immediately
+animateTabTitle(); // first call
+setInterval(animateTabTitle, speed);
+
+// Optional: pause animation when tab is not visible (saves CPU)
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    // Tab hidden → stop animation
+    clearInterval(animateTabTitle);
+  } else {
+    // Tab visible → resume
+    animateTabTitle();
+  }
+});
+
+// Your original script continues here (audio unlock, particles, mute, etc.)
+const unlockAudio = () => {
+  const overlay = document.getElementById('audio-unlock-overlay');
+  if (overlay) overlay.classList.add('hidden');
+  document.querySelectorAll('audio').forEach(audio => {
+    audio.muted = false;
+    audio.volume = audio.id === 'rain-ambient' ? 0.75 : 1.0;
+  });
+  if (modes[currentModeIndex] === 'rain') {
+    rainSound.play().catch(e => console.log("Rain play failed:", e));
+  }
+  ytPlayer.contentWindow.postMessage('{"event":"command","func":"unMute","args":[]}', '*');
+  ytPlayer.contentWindow.postMessage('{"event":"command","func":"playVideo","args":[]}', '*');
+  document.removeEventListener('click', unlockAudio);
+  document.removeEventListener('touchstart', unlockAudio);
+};
+
+document.addEventListener('click', unlockAudio, { once: true });
+document.addEventListener('touchstart', unlockAudio, { once: true });
+
+// ... rest of your original script (particles, weather toggle, mute logic, etc.) ...
+// Keep everything below exactly as you had it
     // Audio unlock – fixed to work reliably
     const unlockAudio = () => {
       const overlay = document.getElementById('audio-unlock-overlay');
